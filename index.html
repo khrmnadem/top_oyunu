@@ -20,13 +20,48 @@
 var canvas = document.getElementById("canvas"),
 	ctx    = canvas.getContext("2d"),//canvas context oluşturduk
 	G      = window.innerWidth,//pencere genişliğinde oyun alanı genişliği
-	Y      = window.innerHeight;//pencere yüksekliğinde oyun alanı yüksekliği
+	Y      = window.innerHeight,//pencere yüksekliğinde oyun alanı yüksekliği
+	parcalar = [], //top çubuğa çarptığında çıkacak parçacıklar için array
+	topum = {}, //top nesnesi
+	cubuk = [2]; //iki çubuk içerecek olan array
 
 	//canvasın tam ekran olmasını sağladık
 	canvas.width  = G;
 	canvas.height = Y;
 
 	ctx.fillRect(0, 0, G, Y);
+
+	//top nesnesini tanımlayalım
+	topum = {
+		x:50, //x ekseninde başlangıç noktasının sola olan uzaklığı (pixel)
+		y:50, //y ekseninde başlangıç noktasının yukarıya olan uzaklığı (pixel)
+		r:5, //radius, topa yuvarlaklık (daire şekli) vermek için
+		c:"white", //color, renk için beyaz tanımladık
+		xh:4, //topun x eksenindeki hızının başlangıç değeri
+		yh:8, //topun y eksenindeki hızının başlangıç değeri
+
+		ciz: function (){
+			ctx.beginPath();//çizime başlayacağımızı haber vermek için
+			ctx.fillStyle = this.c;//nesnenin içini doldururken verilecek stil için (biz yukarıda tanımladığımız c değişkeninden gelen rengi atadık)
+			ctx.arc(this.x, this.y, this.r, 0/*başlangıç trigonometrik açısı 0*/, Math.PI*2/*bitiş trigonometrik açısı 2PI yani 360*/, false/*saat yönüne doğru*/);//oluşturulacak topun kıvrımlarını ayarlıyoruz
+			ctx.fill();//çiz(doldur)
+		}
+	};
+
+	//çubuk için fonksiyon oluşturalım
+	function Kurek(poz) {
+		this.h = 5; //sadece BU(this) fonksiyon içinde çalışacak olan küreğin yüksekliğini belirten h değişkeni
+		this.w = 150; //sadece BU(this) fonksiyonu içinde çalışacak olan küreğin genişliğini belirten w değişkeni
+
+		//küreklerin(çubukların) pozisyonunu tanımlayalım
+		this.x = G/2 - this.w/2;
+		this.y = (poz == "ust") ? 0 : Y - this.h;
+
+		//cubuk arrayine kürekleri(çubukları) ekleyelim
+		cubuk.push(new Kurek("asagi")); //burada anlamadığım bir şey var: Kurek bir fonksiyon, neden obje gibi new keywordü ile kullandık?
+		cubuk.push(new Kurek("ust"));
+
+	}
 
 </script>
 </body>
