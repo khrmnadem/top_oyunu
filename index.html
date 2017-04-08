@@ -92,15 +92,15 @@ var canvas = document.getElementById("canvas"),
 			ctx.textBaseline = "middle";
 			ctx.fillStyle = "white";
 			ctx.fillText("Başla", G/2, Y/2);
-		};
+		}
 	};
 
 	//reset butonu
-	resettButon = {
+	resetButon = {
 		w: 100,
 		h: 50,
 		x: G/2 - 50,
-		y: Y/2 - 25,
+		y: Y/2 - 50,
 
 		ciz: function(){
 			ctx.strokeStyle = "white";
@@ -111,7 +111,7 @@ var canvas = document.getElementById("canvas"),
 			ctx.textBaseline = "middle";
 			ctx.fillStyle = "white";
 			ctx.fillText("Tekrar Oyna", G/2, Y/2 - 25);
-		};
+		}
 	};	
 
 	//çubuk için fonksiyon oluşturalım
@@ -157,7 +157,7 @@ var canvas = document.getElementById("canvas"),
 
 	function baslamaEkrani(){
 		ciz();
-		baslatButon();
+		baslatButon.ciz();
 	};
 
 	//ekrandaki değişiklikleri güncelle fonksiyonu gösterecek (bu fonksiyon animDongu içinde yer aldığı için saniyede 60 kere çalışır)
@@ -246,7 +246,7 @@ function butonTiklandi(e){
 	    my = e.pageY;
 
 	//baslat butonuna tıklandığında
-	if(mx >= baslatButon.x && mx <= baslatButon.x + baslatbuton.w){
+	if(mx >= baslatButon.x && mx <= baslatButon.x + baslatButon.w){
 		animDongu();
 
 		//baslat butonunu ekrandan sil
@@ -266,7 +266,6 @@ function butonTiklandi(e){
 	}
 
 }
-
 baslamaEkrani();
 </script>
 </body>
