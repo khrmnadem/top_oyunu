@@ -57,6 +57,7 @@ var canvas = document.getElementById("canvas"),
 
 	//eventlistener ekleyelim (mouseun hareketini yakalamak(takip etmek) için)
 	canvas.addEventListener("mousemove", mouseHareket, true); //mousemove olduğunda(fare hareket ettiğinde) bu hareketi parametre olarak mouseHareket fonksiyonuna gönder
+	canvas.addEventListener("mousedown", butonTiklandi, true);
 
 	//top nesnesini tanımlayalım
 	topum = {
@@ -76,11 +77,11 @@ var canvas = document.getElementById("canvas"),
 	};
 
 	//başlat butonu
-	baslatButon{
+	baslatButon = {
 		w: 100,
 		h: 50,
-		x: G/2 - 50;
-		y: Y/2 - 25;
+		x: G/2 - 50,
+		y: Y/2 - 25,
 
 		ciz: function(){
 			ctx.strokeStyle = "white";
@@ -91,15 +92,15 @@ var canvas = document.getElementById("canvas"),
 			ctx.textBaseline = "middle";
 			ctx.fillStyle = "white";
 			ctx.fillText("Başla", G/2, Y/2);
-		}
+		};
 	};
 
 	//reset butonu
-	baslatButon{
+	resettButon = {
 		w: 100,
 		h: 50,
-		x: G/2 - 50;
-		y: Y/2 - 25;
+		x: G/2 - 50,
+		y: Y/2 - 25,
 
 		ciz: function(){
 			ctx.strokeStyle = "white";
@@ -110,7 +111,7 @@ var canvas = document.getElementById("canvas"),
 			ctx.textBaseline = "middle";
 			ctx.fillStyle = "white";
 			ctx.fillText("Tekrar Oyna", G/2, Y/2 - 25);
-		}
+		};
 	};	
 
 	//çubuk için fonksiyon oluşturalım
@@ -152,7 +153,12 @@ var canvas = document.getElementById("canvas"),
 		ciz(); //her şeyi çiz
 	};
 
-	animDongu();
+	//animDongu();
+
+	function baslamaEkrani(){
+		ciz();
+		baslatButon();
+	};
 
 	//ekrandaki değişiklikleri güncelle fonksiyonu gösterecek (bu fonksiyon animDongu içinde yer aldığı için saniyede 60 kere çalışır)
 	function guncelle(){
@@ -229,8 +235,39 @@ function oyunBitti(){
 	ctx.textBaseline = "middle";
 	ctx.fillText("Oyun Bitti", G/2, Y/2 + 25);
 	animasyonFrameIptal(res);
+	bitti = 1;
+	resetButon.ciz();
 };
 
+//buton tıklandığında başla veya resetle
+function butonTiklandi(e){
+	//mouse pozisyonunu bir değişkende sakla
+	var mx = e.pageX,
+	    my = e.pageY;
+
+	//baslat butonuna tıklandığında
+	if(mx >= baslatButon.x && mx <= baslatButon.x + baslatbuton.w){
+		animDongu();
+
+		//baslat butonunu ekrandan sil
+		baslatButon = {};
+	}
+	if(bitti == 1){
+		if(mx >= resetButon.x && mx <= resetButon.x + resetButon.w){
+			topum.x = 20;
+			topum.y = 20;
+			puanlar = 0;
+			topum.xh = 4;
+			topum.yh = 8;
+			animDongu();
+
+			bitti = 0;
+		}
+	}
+
+}
+
+baslamaEkrani();
 </script>
 </body>
 </html>
