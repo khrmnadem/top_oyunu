@@ -13,6 +13,9 @@
 </head>
 <body>
 <canvas id="canvas"></canvas>
+<audio preload="true" id="carp"><!-- carpma anında gelecek olan ses -->
+	<source src="hit.mp3" /> <!-- sesin kaynağı -->
+</audio>
 
 <script type="text/javascript">
 //canvas animasyonu için gerekli kod
@@ -58,6 +61,9 @@ var canvas = document.getElementById("canvas"),
 	//eventlistener ekleyelim (mouseun hareketini yakalamak(takip etmek) için)
 	canvas.addEventListener("mousemove", mouseHareket, true); //mousemove olduğunda(fare hareket ettiğinde) bu hareketi parametre olarak mouseHareket fonksiyonuna gönder
 	canvas.addEventListener("mousedown", butonTiklandi, true);
+
+	//carpisma müziği
+	carpisma = document.getElementById("carp");
 
 	//top nesnesini tanımlayalım
 	topum = {
@@ -269,7 +275,7 @@ function carpismaEylemi(topum, p){
 		parcaPozisyonu.y = topum.y - topum.r;
 		cogalt = -1;
 	}else if(cubukCarpisma == 2){
-		topum.y = p.y + topum.r;
+		topum.y = p.h + topum.r;
 		parcaPozisyonu.y = topum.y - topum.r;
 		cogalt = 1;
 	}
@@ -303,7 +309,7 @@ function parcalariyay(){
 		par.y += par.yh;
 
 		//parçacıkları ekrandan kaldıralım
-		par.radius = Math.max(par.radius - 0,05, 0.0)
+		par.radius = Math.max(par.radius - 0.05, 0.0)
 	}
 }
 
