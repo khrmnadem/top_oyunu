@@ -15,6 +15,14 @@
 <canvas id="canvas"></canvas>
 
 <script type="text/javascript">
+//canvas animasyonu için gerekli kod
+//canvas çizim fonksiyonu için gereken isteği 1 saniyede (1000ms'te) 60 kere gönder (60fps için)
+window.animasyonFrameIstegi = (function(){
+
+	return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function ( callback ){
+		return window.setTimeout(callback, 1000 / 60);
+		};
+})();
 
 //canvas değişkeni
 var canvas = document.getElementById("canvas"),
@@ -28,8 +36,6 @@ var canvas = document.getElementById("canvas"),
 	//canvasın tam ekran olmasını sağladık
 	canvas.width  = G;
 	canvas.height = Y;
-
-	ctx.fillRect(0, 0, G, Y);
 
 	//top nesnesini tanımlayalım
 	topum = {
@@ -62,7 +68,33 @@ var canvas = document.getElementById("canvas"),
 	cubuk.push(new Kurek("asagi")); //burada anlamadığım bir şey var: Kurek bir fonksiyon, neden obje gibi new keywordü ile kullandık?
 	cubuk.push(new Kurek("ust"));
 
-	
+	//tuval çizmek için gerekli fonksiyon
+	//galiba artık daha düzgün bir yapıya gitmek için attığımız ilk adım (kişisel yorum)
+	function canvasCiz(){
+		ctx.fillStyle = "black";
+		ctx.fillRect(0, 0, G, Y);
+	};
+
+	//her şeyi canvas bölgesinde (tuvalde) çizmek için gerekli fonksiyon
+	function ciz(){
+		canvasCiz(); //canvası çiz
+		for(var i = 0; i<cubuk.length; i++){ //çubukları(kürekleri) çiz
+			p = cubuk[i];
+			ctx.fillStyle = "white";
+			ctx.fillRect(p.x, p.y, p.w, p.h);
+		}
+		topum.ciz(); //topum nesnesi içindeki çiz fonksiyonu, şu an oluşturduğumuz çiz fonksiyonu değil
+		guncelle(); //çubuğun, topun yeni konumlarını 1 saniyede 60 kez değiştirecek fonksiyon
+	};
+
+	//animasyonları çalıştırmak için oluşturduğumuz döngü
+	function animDongu(){
+		res = animasyonFrameIstegi(animDongu);//animasyon frame isteğini resetle
+		ciz(); //her şeyi çiz
+	};
+
+	animDongu();
+
 </script>
 </body>
 </html>
