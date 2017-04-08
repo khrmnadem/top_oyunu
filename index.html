@@ -122,7 +122,7 @@ var canvas = document.getElementById("canvas"),
 		this.radius = 1.2;
 
 		this.xh = -1.5 + Math.random() *3;
-		this.xy = m * Math.random() * 1.5;
+		this.yh = m * Math.random() * 1.5;
 	}
 
 	//hızı artırıyoruz
@@ -130,7 +130,7 @@ var canvas = document.getElementById("canvas"),
 		if(puanlar % 4 == 0){
 			if(Math.abs(topum.xh) < 15){
 				topum.xh += (topum.xh < 0) ? -1 : 1;
-				topum.xy += (topum.xy < 0) ? -2 : 2;
+				topum.yh += (topum.yh < 0) ? -2 : 2;
 			}
 		}
 	}
@@ -227,6 +227,16 @@ var canvas = document.getElementById("canvas"),
 				topum.x = topum.r;//top soldan dışarı çıktığı için duvara yasla (topun x ekseninde bulunduğu noktayı yarıçapına eşitle)
 			}
 		}//ilk if kontrolünün bitişi
+		if(carpismaDegiskeni == 1){
+			for(var k = 0; k < carpismaParcacigi; k++){
+				parcalar.push(new parcacikOlustur(parcaPozisyonu.x, parcaPozisyonu.y, cogalt));
+			}
+		}
+
+		//parçaları yay
+		parcalariyay();
+
+		carpismaDegiskeni = 0;
 	}//güncelle fonksiyonunun bitişi
 
 	//mouseumuzu hareket ettiriyoruz.
@@ -271,9 +281,29 @@ function carpismaEylemi(topum, p){
 
 		if(puanlar > 0){
 			carpisma.pause();
+		}
 			carpisma.currentTime = 0;
 			carpisma.play();
+	}
+	parcaPozisyonu.x = topum.x;
+	carpismaDegiskeni = 1;
+}
+
+//parçaları dağıttığımız bölüm
+function parcalariyay(){
+	for(var j = 0; j < parcalar.length; j++){
+		par = parcalar[j];
+		ctx.beginPath();
+		ctx.fillStyle = "white";
+		if(par.radius > 0){
+			ctx.arc(par.x, par.y, par.radius, 0, Math.PI*2, false);
 		}
+		ctx.fill();
+		par.x += par.xh;
+		par.y += par.yh;
+
+		//parçacıkları ekrandan kaldıralım
+		par.radius = Math.max(par.radius - 0,05, 0.0)
 	}
 }
 
