@@ -15,9 +15,19 @@
 <canvas id="canvas"></canvas>
 
 <script type="text/javascript">
+
 //canvas değişkeni
 var canvas = document.getElementById("canvas"),
-	ctx = canvas.getContext("2d");
+	ctx    = canvas.getContext("2d"),//canvas context oluşturduk
+	G      = window.innerWidth,//pencere genişliğinde oyun alanı genişliği
+	Y      = window.innerHeight;//pencere yüksekliğinde oyun alanı yüksekliği
+
+	//canvasın tam ekran olmasını sağladık
+	canvas.width  = G;
+	canvas.height = Y;
+
+	ctx.fillRect(0, 0, G, Y);
+
 </script>
 </body>
 </html>
