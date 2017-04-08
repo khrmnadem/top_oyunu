@@ -38,7 +38,18 @@ var canvas = document.getElementById("canvas"),
 	mouse = {}, //mouse objesi
 	parcalar = [], //top çubuğa çarptığında çıkacak parçacıklar için array
 	topum = {}, //top nesnesi
-	cubuk = [2]; //iki çubuk içerecek olan array
+	cubuk = [2], //iki çubuk içerecek olan array
+	puanlar = 0, //kullanıcıların puanları
+	hiz = 60, //fps hız saniye başına frame
+	carpismaParcacigi = 20,
+	carpismaDegiskeni = 0,
+	parcaPozisyonu = {}, //parçaların yörüngesi
+	kivilcimDegiskeni = 1,
+	baslatButon = {}, //baslat butonu objesi
+	resetButon = {}, //reset buton objesi
+	bitti = 0,
+	res, //animasyonu başlatmak için
+	cubukCarpisma;
 
 	//canvasın tam ekran olmasını sağladık
 	canvas.width  = G;
@@ -63,6 +74,44 @@ var canvas = document.getElementById("canvas"),
 			ctx.fill();//çiz(doldur)
 		}
 	};
+
+	//başlat butonu
+	baslatButon{
+		w: 100,
+		h: 50,
+		x: G/2 - 50;
+		y: Y/2 - 25;
+
+		ciz: function(){
+			ctx.strokeStyle = "white";
+			ctx.lineWidth = "2";
+			ctx.strokeRect(this.x, this.y, this.w, this.h);
+			ctx.font = "18px Arial, sans-serif";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillStyle = "white";
+			ctx.fillText("Başla", G/2, Y/2);
+		}
+	};
+
+	//reset butonu
+	baslatButon{
+		w: 100,
+		h: 50,
+		x: G/2 - 50;
+		y: Y/2 - 25;
+
+		ciz: function(){
+			ctx.strokeStyle = "white";
+			ctx.lineWidth = "2";
+			ctx.strokeRect(this.x, this.y, this.w, this.h);
+			ctx.font = "18px Arial, sans-serif";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillStyle = "white";
+			ctx.fillText("Tekrar Oyna", G/2, Y/2 - 25);
+		}
+	};	
 
 	//çubuk için fonksiyon oluşturalım
 	function Kurek(poz) {
