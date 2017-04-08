@@ -114,13 +114,58 @@ var canvas = document.getElementById("canvas"),
 				p.x = mouse.x - p.w/2; //eğer p.x yani çubuğun x eksenindeki başlangıcı mouse.x ile aynı olsaydı, çubuk mouseu tuttuğumuz yerden başlardı, bu yüzden mouse.xten çubuğun genişliğinin yarısını çıkardık ki çubuğun başlangıç noktası çubuğun ortasına kaysın ve mouseu tuttuğumuz yerde çubuğun ortası olsun. !!ÖNEMLİ!!
 			}
 		}
-	}
+
+		//cubukları çağır
+		p1 = cubuk[1]; //p1 : birinci çubuk
+		p2 = cubuk[2]; //p2 : ikinci çubuk
+
+		//çarpışma işleminin gerçekleştiği yer
+		if(carpismalar(topum, cubuk[1])){//eğer topla 1. çubuk çarpıştıysa
+			topum.yh = -topum.yh;//topun y eksenindeki hızının yönünü değiştir(hızı eksi ile çarp)
+		}else if(carpismalar(topum, cubuk[2])){//eğer topla 2. çubuk çarpıştıysa
+			topum.yh = -topum.yh;//topun y eksenindeki hızının yönünü değiştir(hızı eksi ile çarp)
+		}else{//duvarlardan birine çarpmıştır (yanlara) veya çubuklara çarpmayıp yere düşmüş ya da havaya uçmuştur
+
+			//top üst veya aşağı çubuğa çarpmazsa (phphocam çarparsa yazmış buraya...)
+			if(topum.y + topum.r > Y){//top alt çubuğa çarpmadan aşağı düşerse
+				topum.y =  Y - topum.r;
+				oyunBitti(); //oyunu bitir
+			}else if(topum.y < 0){ //top üst çubuğa çarpmadan yukarı uçarsa
+				topum.y = topum.r;
+				oyunBitti(); //oyunu bitir
+			}
+
+			//top sağ ve sol duvara çarparsa (çarpmazsa yazmalıydı, phphocam çarparsa yazmış)
+			if(topum.x + topum.r > G){//eğer top toplam genişliği geçtiyse
+				topum.xh = -topum.xh;//hızın yönünü ters çevir, yani top x ekseninde diğer tarafa doğru gitsin
+				topum.x = G - topum.r;//top sağdan dışarı çıktığı için duvara yasla (topun x ekseninde bulunduğu noktayı yarıçapına eşitle)
+			}else if(topum.x - topum.r < 0){//eğer genişliğin başlangıç noktasından(0) küçük olduysa yani soldan dışarı çıkarsa
+				topum.xh = -topum.xh;//hızın yönünü ters çevir, yani top x ekseninde diğer tarafa doğru gitsin
+				topum.x = topum.r;//top soldan dışarı çıktığı için duvara yasla (topun x ekseninde bulunduğu noktayı yarıçapına eşitle)
+			}
+		}//ilk if kontrolünün bitişi
+	}//güncelle fonksiyonunun bitişi
 
 	//mouseumuzu hareket ettiriyoruz.
 	function mouseHareket(e){ //eventlistenerdan gelen parametreyi al, parametrede içinde, mouseun sayfanın x ekseninde ettiği hareketi(pageX) mouse.x e ata, mouseun sayfanın y ekseninde ettiği hareketi(pageY) mouse.y ye ata
 		mouse.x = e.pageX; 
 		mouse.y = e.pageY;
 	}
+
+	//top ile çubuk arasındaki çarpışmayı kontrol eden fonksiyon
+	function carpismalar(b, p){//b: top , p: çubuk temsil eder.
+		if(b.x + topum.r >= p.x && b.x - topum.r <= p.x + p.w){//eğer topun x ekseninde bulunduğu nokta(topun ortası oluyor) + topun yarıçapı >= çubuğun x ekseninde bulunduğu nokta(çubuğun sol başlangıcı oluyor) && topun orta noktası - topun yarıçapı <= çubuğun sol başlangıç noktası + çubuğun genişliği ise. !!ÖNEMLİ!! bu kontrolün amacı top çubuklara çarpıyor mu çarpmıyor mu onu öğrenmektir.
+			if(b.y >= (p.y - p.h/*bana kalırsa - p.h olmamalı p.y tek başına yeterli (kişisel not)*/) && p.y > 0){//topun y ekseninde bulunduğu nokta(topun orta noktası oluyor) >= çubuğun y eksenindeki bulunduğu nokta(çubuğun üst başlangıcı oluyor) - çubuğun yüksekliği && çubuğun y ekseninde bulunduğu nokta > 0 ise. !!ÖNEMLİ!! bu kontrolün amacı topun alttaki çubuğa çarpmasını yakalamaktır
+				cubukCarpisma = 1;//top 1. çubukla(alttaki çubukla) çarpıştı
+				return true; //çarptığı için true döndürür
+			}else if(b.y <= p.h &&  p.y == 0){//topun y ekseninde bulunduğu nokta(topun orta noktası oluyor) <= çubuğun yüksekliği && çubuğun y ekseninde bulunduğu nokta == 0 ise. !!ÖNEMLİ!! bu kontrolün amacı topun üstteki çubuğa çarpmasını yakalamaktır
+				cubukCarpisma = 2;//top 2. çubukla(üstteki çubukla) çarpıştı
+				return true; //çarptığı için true döndürür
+			}else{//eğer buraya düştüysek, top ne üstteki çubuğa ne de alttaki çubuğa çarpmamıştır, ya aşağı düşmüş ya da yukarı uçmuştur, bu yüzden false döndürür
+				return false;
+			}
+		}
+	}//carpismalar fonksiyonu sonu
 
 </script>
 </body>
