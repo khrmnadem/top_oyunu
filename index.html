@@ -29,6 +29,7 @@ var canvas = document.getElementById("canvas"),
 	ctx    = canvas.getContext("2d"),//canvas context oluşturduk
 	G      = window.innerWidth,//pencere genişliğinde oyun alanı genişliği
 	Y      = window.innerHeight,//pencere yüksekliğinde oyun alanı yüksekliği
+	mouse = {}, //mouse objesi
 	parcalar = [], //top çubuğa çarptığında çıkacak parçacıklar için array
 	topum = {}, //top nesnesi
 	cubuk = [2]; //iki çubuk içerecek olan array
@@ -36,6 +37,9 @@ var canvas = document.getElementById("canvas"),
 	//canvasın tam ekran olmasını sağladık
 	canvas.width  = G;
 	canvas.height = Y;
+
+	//eventlistener ekleyelim (mouseun hareketini yakalamak(takip etmek) için)
+	canvas.addEventListener("mousemove", mouseHareket, true); //mousemove olduğunda(fare hareket ettiğinde) bu hareketi parametre olarak mouseHareket fonksiyonuna gönder
 
 	//top nesnesini tanımlayalım
 	topum = {
@@ -94,6 +98,28 @@ var canvas = document.getElementById("canvas"),
 	};
 
 	animDongu();
+
+	//ekrandaki değişiklikleri güncelle fonksiyonu gösterecek (bu fonksiyon animDongu içinde yer aldığı için saniyede 60 kere çalışır)
+	function guncelle(){
+		//topu hareket ettiriyoruz
+		//hız: birim zamanda(bizim örneğimizde bir saniyenin altmışta biri) alınan yol !!önemli!! yani saniyenin altmışta birinde ben mouseun x eksenindeki bulunduğu noktaya hız değerim olan 4 ü eklediğimde hızı 4 olmuş olur !! , her güncelleme işleminde topun hız miktarını bulunduğu noktaya ekleyerek yol almasını sağladık
+		topum.x = topum.x + topum.xh;//topun x eksenindeki bulunduğu noktaya topun x eksenindeki hızını ekle
+		topum.y = topum.y + topum.yh;
+
+		//cubugu hareket ettiriyoruz
+		if(mouse.x && mouse.y){ //mouse.x VE mouse.y TRUE ise yani değer barındırıyor ise
+			for(var i = 1; i < cubuk.length; i++){ //iki çubuğa da erişebilmek için for açtık
+				p = cubuk[i]; //çubuğun herhangi bir PARÇASI(p)
+				p.x = mouse.x - p.w/2; //eğer p.x yani çubuğun x eksenindeki başlangıcı mouse.x ile aynı olsaydı, çubuk mouseu tuttuğumuz yerden başlardı, bu yüzden mouse.xten çubuğun genişliğinin yarısını çıkardık ki çubuğun başlangıç noktası çubuğun ortasına kaysın ve mouseu tuttuğumuz yerde çubuğun ortası olsun. !!ÖNEMLİ!!
+			}
+		}
+	}
+
+	//mouseumuzu hareket ettiriyoruz.
+	function mouseHareket(e){ //eventlistenerdan gelen parametreyi al, parametrede içinde, mouseun sayfanın x ekseninde ettiği hareketi(pageX) mouse.x e ata, mouseun sayfanın y ekseninde ettiği hareketi(pageY) mouse.y ye ata
+		mouse.x = e.pageX; 
+		mouse.y = e.pageY;
+	}
 
 </script>
 </body>
