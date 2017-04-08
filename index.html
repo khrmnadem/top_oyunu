@@ -24,6 +24,11 @@ window.animasyonFrameIstegi = (function(){
 		};
 })();
 
+//animasyon frame iptal
+window.animasyonFrameIptal = (function(){
+	return window.cancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.mozCancelRequestAnimationFrame || window.oCancelRequestAnimationFrame || window.msCancelRequestAnimationFrame || clearTimeout
+})();
+
 //canvas değişkeni
 
 var canvas = document.getElementById("canvas"),
@@ -166,6 +171,16 @@ var canvas = document.getElementById("canvas"),
 			}
 		}
 	}//carpismalar fonksiyonu sonu
+
+//oyunu bitiren fonksiyon
+function oyunBitti(){
+	ctx.fillStyle = "white";
+	ctx.font = "20px Arial, sans-serif";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	ctx.fillText("Oyun Bitti", G/2, Y/2 + 25);
+	animasyonFrameIptal(res);
+};
 
 </script>
 </body>
