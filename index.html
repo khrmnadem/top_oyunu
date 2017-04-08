@@ -56,13 +56,13 @@ var canvas = document.getElementById("canvas"),
 		//küreklerin(çubukların) pozisyonunu tanımlayalım
 		this.x = G/2 - this.w/2;
 		this.y = (poz == "ust") ? 0 : Y - this.h;
-
-		//cubuk arrayine kürekleri(çubukları) ekleyelim
-		cubuk.push(new Kurek("asagi")); //burada anlamadığım bir şey var: Kurek bir fonksiyon, neden obje gibi new keywordü ile kullandık?
-		cubuk.push(new Kurek("ust"));
-
 	}
 
+	//cubuk arrayine kürekleri(çubukları) ekleyelim
+	cubuk.push(new Kurek("asagi")); //burada anlamadığım bir şey var: Kurek bir fonksiyon, neden obje gibi new keywordü ile kullandık?
+	cubuk.push(new Kurek("ust"));
+
+	
 </script>
 </body>
 </html>
