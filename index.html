@@ -91,7 +91,7 @@ var canvas = document.getElementById("canvas"),
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
 			ctx.fillStyle = "white";
-			ctx.fillText("Başla", G/2, Y/2);
+			ctx.fillText("Başlat", G/2, Y/2);
 		}
 	};
 
@@ -162,6 +162,8 @@ var canvas = document.getElementById("canvas"),
 
 	//ekrandaki değişiklikleri güncelle fonksiyonu gösterecek (bu fonksiyon animDongu içinde yer aldığı için saniyede 60 kere çalışır)
 	function guncelle(){
+	skoruGuncelle();
+
 		//topu hareket ettiriyoruz
 		//hız: birim zamanda(bizim örneğimizde bir saniyenin altmışta biri) alınan yol !!önemli!! yani saniyenin altmışta birinde ben mouseun x eksenindeki bulunduğu noktaya hız değerim olan 4 ü eklediğimde hızı 4 olmuş olur !! , her güncelleme işleminde topun hız miktarını bulunduğu noktaya ekleyerek yol almasını sağladık
 		topum.x = topum.x + topum.xh;//topun x eksenindeki bulunduğu noktaya topun x eksenindeki hızını ekle
@@ -226,6 +228,16 @@ var canvas = document.getElementById("canvas"),
 			}
 		}
 	}//carpismalar fonksiyonu sonu
+
+//puan tablosu
+function skoruGuncelle(){
+	ctx.fillStyle = "white";
+	ctx.font = "16px Arial, sans-serif";
+	ctx.textAlign = "left";
+	ctx.textBaseline = "top";
+	ctx.fillText("Puan: " + puanlar, 20, 20);
+
+}
 
 //oyunu bitiren fonksiyon
 function oyunBitti(){
